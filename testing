@@ -7,6 +7,7 @@ This is a temporary script file.
 
 import pandas as pd
 import numpy as np
+import zipfile
 import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
@@ -21,6 +22,15 @@ acim=pd.read_csv(r'C:\Users\derfe\stock_project\acim.us.txt')
 cetv=pd.read_csv(r'C:\Users\derfe\stock_project\cetv.us.txt')
 
 #print(aadr.head())
+
+def read_stock(ticker):
+    zf=zipfile.ZipFile(r'C:\Users\derfe\stock_project\stocks.zip')
+    stock=[]
+    with pd.read_csv(zf.open(r'Stocks/'+ticker+'.us.txt'),chunksize=10000) as reader:
+        for chunk in reader:
+            stock.append(chunk)
+        stock=pd.concat(stock,ignore_index=True)
+    return stock
 
 def norm(stock,series):
     return stock[series]/stock[series][0]
