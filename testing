@@ -1,0 +1,68 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
+from statsmodels.stats.descriptivestats import describe 
+
+warnings.filterwarnings('ignore')
+sns.set_style('darkgrid')
+
+aadr=pd.read_csv(r'C:\Users\derfe\stock_project\aadr.us.txt')
+aaxj=pd.read_csv(r'C:\Users\derfe\stock_project\aaxj.us.txt')
+acim=pd.read_csv(r'C:\Users\derfe\stock_project\acim.us.txt')
+cetv=pd.read_csv(r'C:\Users\derfe\stock_project\cetv.us.txt')
+
+#print(aadr.head())
+
+def norm(stock,series):
+    return stock[series]/stock[series][0]
+
+
+def returns(stock):
+    returns=pd.Series(index=range(len(stock)))
+    returns[0]=0
+    for i in range(1,len(stock)):
+        returns[i]=(stock[i]-stock[i-1])/stock[i-1]*100
+    return returns
+
+#print(aadr['Close'].head())        
+
+def get_moments(stock):
+    percents=returns(stock)
+    return describe(percents,stats=['nobs','mean','std','skew','kurtosis'])
+
+
+
+
+print(get_moments(aadr.Close))
+
+#plt.hist(cetv_returns,bins=50)
+#plt.show()
+
+
+
+
+
+#Use Closing Price
+'''
+aadr['Close'].plot(kind='kde')
+aaxj['Close'].plot(kind='kde')
+acim['Close'].plot(kind='kde')
+'''
+#Normalize prices by initial
+
+
+'''
+plt.plot(aadr['Open'],color='blue')
+plt.plot(aaxj['Open'],color='green')
+plt.plot(acim['Open'],color='red')
+plt.show()
+'''                
